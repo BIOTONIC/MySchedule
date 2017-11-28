@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import ca.wlu.hztw.myschedule.R;
+import ca.wlu.hztw.myschedule.data.Event;
+import ca.wlu.hztw.myschedule.main.MainActivity;
 import ca.wlu.hztw.myschedule.util.ColorManager;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
@@ -36,8 +38,20 @@ public class EditActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        EditText editTitle = (EditText) findViewById(R.id.edit_title);
+        EditText editTname = (EditText) findViewById(R.id.edit_tname);
         editDate = (EditText) findViewById(R.id.edit_date);
         editTime = (EditText) findViewById(R.id.edit_time);
+        EditText editNote = (EditText) findViewById(R.id.edit_note);
+
+        Event event = (Event) getIntent().getSerializableExtra(MainActivity.EDIT_PARAM);
+        if (event != null) {
+            editTitle.setText(event.getTitle());
+            editTname.setText(event.getTname());
+            editDate.setText(event.getDate());
+            editTime.setText(event.getTimeDuration());
+            editNote.setText(event.getNote());
+        }
 
         editDate.setOnClickListener(new View.OnClickListener() {
             @Override

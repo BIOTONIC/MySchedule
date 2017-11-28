@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity
     private MainPresenter presenter;
     private MainListFragment listFragment;
 
-    public final static int EDIT_EVENT = 215;
+    public final static int EDIT_ACTIVITY = 215;
+    public final static String EDIT_PARAM = "edit_param";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDIT_EVENT) {
+        if (requestCode == EDIT_ACTIVITY) {
             switch (resultCode) {
                 case RESULT_OK:
 

@@ -1,6 +1,7 @@
 package ca.wlu.hztw.myschedule.main;
 
 import android.view.View;
+import ca.wlu.hztw.myschedule.data.Event;
 import ca.wlu.hztw.myschedule.data.EventRepository;
 
 import java.io.Serializable;
@@ -14,7 +15,8 @@ public class MainPresenter implements Serializable {
     }
 
     public void onBindListViewHolder(MainRecyclerAdapter.ViewHolder holder, int position) {
-        holder.setTitle(repository.getTitle(position));
+        holder.setEventTitle(repository.getTitle(position));
+        holder.setEventDesc(repository.getDesc(position));
     }
 
     public int getListItemCount() {
@@ -27,5 +29,9 @@ public class MainPresenter implements Serializable {
 
     public boolean dropEvent(View view, int pos) {
         return false;
+    }
+
+    public Event getEvent(int pos){
+        return repository.getEvent(pos);
     }
 }

@@ -80,10 +80,9 @@ public class MainListFragment extends Fragment implements MainContract.ItemClick
     // when item of recycler view is clicked
     @Override
     public void onItemClick(View view, int position) {
-        getActivity().startActivityForResult(new Intent(getActivity(), EditActivity.class), MainActivity.EDIT_EVENT);
-//        MainEventFragment eventFragment = MainEventFragment.newInstance((Serializable) presenter, position);
-//        getActivity().getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, eventFragment).addToBackStack(null).commit();
+        Intent intent = new Intent(getActivity(), EditActivity.class);
+        intent.putExtra(MainActivity.EDIT_PARAM, presenter.getEvent(position));
+        getActivity().startActivityForResult(intent, MainActivity.EDIT_ACTIVITY);
     }
 
     @Override

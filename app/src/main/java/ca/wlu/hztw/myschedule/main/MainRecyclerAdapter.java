@@ -14,7 +14,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     private final MainPresenter presenter;
     private final MainContract.ItemClickListener listener;
 
-    public MainRecyclerAdapter(MainPresenter presenter, MainContract.ItemClickListener listener){
+    public MainRecyclerAdapter(MainPresenter presenter, MainContract.ItemClickListener listener) {
         this.presenter = presenter;
         this.listener = listener;
     }
@@ -39,14 +39,16 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final CardView cardView;
         private final TextView eventTitle;
+        private final TextView eventDesc;
         private final Button doneBtn;
         private final Button dropBtn;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
 
             cardView = itemView.findViewById(R.id.event_card);
             eventTitle = itemView.findViewById(R.id.event_title);
+            eventDesc = itemView.findViewById(R.id.event_desc);
             doneBtn = itemView.findViewById(R.id.done_btn);
             dropBtn = itemView.findViewById(R.id.drop_btn);
 
@@ -55,25 +57,29 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
             dropBtn.setOnClickListener(this);
         }
 
-        public void setTitle(String title){
+        public void setEventTitle(String title) {
             eventTitle.setText(title);
         }
 
+        public void setEventDesc(String desc) {
+            eventDesc.setText(desc);
+        }
+
         @Override
-        public void onClick(View v){
-            switch(v.getId()){
+        public void onClick(View v) {
+            switch (v.getId()) {
                 case R.id.event_card:
-                    listener.onItemClick(v,getLayoutPosition());
+                    listener.onItemClick(v, getLayoutPosition());
                     break;
                 case R.id.done_btn:
                     int pos = getLayoutPosition();
-                    if(presenter.doneEvent(v,pos)){
+                    if (presenter.doneEvent(v, pos)) {
                         notifyItemRemoved(pos);
                     }
                     break;
                 case R.id.drop_btn:
                     pos = getLayoutPosition();
-                    if(presenter.dropEvent(v, pos)){
+                    if (presenter.dropEvent(v, pos)) {
                         notifyItemRemoved(pos);
                     }
                     break;
