@@ -81,7 +81,7 @@ public class MainListFragment extends Fragment implements MainContract.ItemClick
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(getActivity(), EditActivity.class);
-        intent.putExtra(MainActivity.EDIT_PARAM, presenter.getEvent(position));
+        intent.putExtra(MainActivity.EDIT_PARAM, position);
         getActivity().startActivityForResult(intent, MainActivity.EDIT_ACTIVITY);
     }
 

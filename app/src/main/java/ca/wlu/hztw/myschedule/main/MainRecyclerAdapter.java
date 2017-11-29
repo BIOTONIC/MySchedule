@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import ca.wlu.hztw.myschedule.R;
+import ca.wlu.hztw.myschedule.util.ColorManager;
 
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder> {
 
@@ -51,6 +52,9 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
             eventDesc = itemView.findViewById(R.id.event_desc);
             doneBtn = itemView.findViewById(R.id.done_btn);
             dropBtn = itemView.findViewById(R.id.drop_btn);
+
+            ColorManager colorManager = ColorManager.getInstance(itemView.getResources());
+            doneBtn.setBackgroundColor(colorManager.getVibrant());
 
             cardView.setOnClickListener(this);
             doneBtn.setOnClickListener(this);

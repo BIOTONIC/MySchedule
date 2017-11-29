@@ -1,6 +1,7 @@
 package ca.wlu.hztw.myschedule.main;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,10 +17,11 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import ca.wlu.hztw.myschedule.R;
 import ca.wlu.hztw.myschedule.data.EventRepository;
+import ca.wlu.hztw.myschedule.edit.EditActivity;
+import ca.wlu.hztw.myschedule.util.ColorManager;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity
@@ -35,15 +37,21 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // toolbar-------------------------------------------------------------
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
+        // fab-----------------------------------------------------------------
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ColorManager colorManager = ColorManager.getInstance(getResources());
+        fab.setBackgroundTintList(ColorStateList.valueOf(colorManager.getMuted()));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplication(), EditActivity.class);
+                intent.putExtra(EDIT_PARAM, -1);
+                startActivityForResult(intent, EDIT_ACTIVITY);
             }
         });
 
@@ -59,7 +67,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // navigation header---------------------------------------------------
-        // avatar image
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound("AS", ColorGenerator.MATERIAL.getColor("Android Studio"));
         ImageView avatarImage = navigationView.getHeaderView(0).findViewById(R.id.avatar_image);
@@ -71,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         // MainListFragment----------------------------------------------------
         listFragment = (MainListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_list_main);
         if (listFragment == null) {
-            listFragment = MainListFragment.newInstance((Serializable) presenter);
+            listFragment = MainListFragment.newInstance(presenter);
         }
         if (findViewById(R.id.fragment_container) != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).commit();
@@ -90,13 +97,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDIT_ACTIVITY) {
-            switch (resultCode) {
-                case RESULT_OK:
-
-                    break;
-                default:
-                    break;
+        if (requestCode == EDIT_ACTIVITY && resultCode == RESULT_OK) {
+            int pos = data.getIntExtra(EDIT_PARAM, -1);
+            if (pos >= 0) {
+                Snackbar.make(getWindow().getDecorView(), "Updating event success.", Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(getWindow().getDecorView(), "Adding event success.", Snackbar.LENGTH_SHORT).show();
             }
         }
     }

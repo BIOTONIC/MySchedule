@@ -42,7 +42,7 @@ public class Event implements Serializable {
     }
 
     public String getTimeDuration() {
-        return startTime + " - " + endTime;
+        return startTime + "-" + endTime;
     }
 
     public String getTitle() {
@@ -56,21 +56,41 @@ public class Event implements Serializable {
     public String getDesc() {
         String sep = " · ";
         String result = "";
-        if (tname != "") {
+        if (tname != "" && tname != null) {
             result += tname;
         }
-        if (date != "") {
+        if (date != "" && date != null) {
             result += sep;
             result += date;
         }
-        if (startTime != "" && endTime != "") {
+        if (startTime != "" && startTime != null && endTime != "" && endTime != null) {
             result += sep;
             result += getTimeDuration();
         }
-        if (note != "") {
+        if (note != "" && note != null) {
             result += sep;
             result += "Note";
         }
         return result;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

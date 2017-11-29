@@ -10,8 +10,8 @@ public class EventRepository {
         eventList = new ArrayList<>();
         eventList.add(new Event("TW", "David", "2017-11-24", "13:00", "14:00", "!@#$%^*()(*^%$#@#$%^*(*\\\\^%$#!@#$%^*()(*^%$#@#$%^*(*\\\\^%$#@!@#$%^*()(*^%$#@#$%^*(*\\\\^%$#@@", "qdnqonqoqnc"));
         eventList.add(new Event("ZY", "Song", "2017-11-25", "09:00", "10:00", "Android Quiz", "\n\nlalalala"));
-        eventList.add(new Event("ZH", "Hoang", "2017-11-25", "10:30", "10:40", "Wireless Lab", "qqq"));
-        eventList.add(new Event("LI", "Ilias", "2017-11-26", "11:20", "11:40", "Wireless Midterm", "lalala"));
+        eventList.add(new Event("ZH", "Hoang", "2017-11-25", "10:30", "10:40", "Wireless Lab", ""));
+        eventList.add(new Event("LI", "Ilias", "2017-11-26", "11:20", "11:40", "Wireless Midterm", ""));
     }
 
     public static synchronized EventRepository getInstance() {
@@ -29,10 +29,20 @@ public class EventRepository {
         return eventList.get(pos).getTitle();
     }
 
-    public String getDesc(int pos){return eventList.get(pos).getDesc();}
+    public String getDesc(int pos) {
+        return eventList.get(pos).getDesc();
+    }
 
     public Event getEvent(int pos) {
         return eventList.get(pos);
+    }
+
+    public void updateEvent(int pos, Event event) {
+        eventList.set(pos,event);
+    }
+
+    public void addEvent(Event event) {
+        eventList.add(event);
     }
 }
 

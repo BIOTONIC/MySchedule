@@ -17,7 +17,7 @@
                       android:orientation="vertical">
             <TextView
                     android:id="@+id/event_title"
-                    android:text="!@#$%^*()(*^%$#@#$%^*(*\\^%$#!@#$%^*()(*^%$#@#$%^*(*\\^%$#@!@#$%^*()(*^%$#@#$%^*(*\\^%$#@@"
+                    android:text=""
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:textSize="12sp"
-                    android:text="Wed, Nov 22, 12:00 - 13:00 · Repeat · Clock · Note"
+                    android:text=""
             />
         </LinearLayout>
 
@@ -41,7 +41,7 @@
         <Button
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:background="#e1e404"
+                android:background="#00ff00"
                 android:id="@+id/done_btn"
                 android:text="DONE"
                 android:textSize="16sp"
@@ -51,7 +51,7 @@
         <Button
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:background="#ff6f00"
+                android:background="#ff5100"
                 android:layout_marginStart="80dp"
                 android:id="@+id/drop_btn"
                 android:text="DROP"
