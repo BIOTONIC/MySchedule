@@ -1,6 +1,7 @@
 package ca.wlu.hztw.myschedule.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,12 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import ca.wlu.hztw.myschedule.R;
 import ca.wlu.hztw.myschedule.data.EventRepository;
-import ca.wlu.hztw.myschedule.edit.EditActivity;
+import ca.wlu.hztw.myschedule.event.EventActivity;
+import ca.wlu.hztw.myschedule.limit.LimitActivity;
+import ca.wlu.hztw.myschedule.login.LoginActivity;
 import ca.wlu.hztw.myschedule.util.ColorManager;
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.lang.reflect.Method;
 
@@ -28,15 +32,36 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MainPresenter presenter;
-    private MainListFragment listFragment;
+    private EventListFragment listFragment;
+    private SharedPreferences userInfo;
 
     public final static int EDIT_ACTIVITY = 215;
+    public final static int LIMIT_ACTIVITY = 920;
     public final static String EDIT_PARAM = "edit_param";
+    public final static String PREFS_NAME = "prefs_name";
+
+    public static boolean isLoggedIn;
+    public static int id;
+    public static String name;
+    public static String email;
+    public static int type;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // load user info or turn to login-------------------------------------
+        userInfo = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        isLoggedIn = userInfo.getBoolean("isLoggedIn", false);
+        if (!isLoggedIn) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+        id = userInfo.getInt("id", 0);
+        name = userInfo.getString("name", "");
+        email = userInfo.getString("email", "");
+        type = userInfo.getInt("type", 0);
 
         // toolbar-------------------------------------------------------------
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -49,9 +74,14 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplication(), EditActivity.class);
-                intent.putExtra(EDIT_PARAM, -1);
-                startActivityForResult(intent, EDIT_ACTIVITY);
+                if (type == 1) {
+                    Intent intent = new Intent(getApplication(), LimitActivity.class);
+                    startActivityForResult(intent, LIMIT_ACTIVITY);
+                } else {
+                    Intent intent = new Intent(getApplication(), EventActivity.class);
+                    intent.putExtra(EDIT_PARAM, -1);
+                    startActivityForResult(intent, EDIT_ACTIVITY);
+                }
             }
         });
 
@@ -67,18 +97,24 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // navigation header---------------------------------------------------
+        LinearLayout linearLayout = navigationView.getHeaderView(0).findViewById(R.id.header_layout);
+        linearLayout.setBackgroundTintList(ColorStateList.valueOf(colorManager.getVibrant()));
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound("AS", ColorGenerator.MATERIAL.getColor("Android Studio"));
-        ImageView avatarImage = navigationView.getHeaderView(0).findViewById(R.id.avatar_image);
-        avatarImage.setImageDrawable(drawable);
+                .buildRound(name.substring(0, 1), colorManager.getMuted());
+        ImageView headerImage = navigationView.getHeaderView(0).findViewById(R.id.header_image);
+        headerImage.setImageDrawable(drawable);
+        TextView headerName = navigationView.getHeaderView(0).findViewById(R.id.header_name);
+        headerName.setText(name);
+        TextView headerEmail = navigationView.getHeaderView(0).findViewById(R.id.header_email);
+        headerEmail.setText(email);
 
         // presenter-----------------------------------------------------------
         presenter = new MainPresenter(EventRepository.getInstance());
 
-        // MainListFragment----------------------------------------------------
-        listFragment = (MainListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_list_main);
+        // EventListFragment----------------------------------------------------
+        listFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
         if (listFragment == null) {
-            listFragment = MainListFragment.newInstance(presenter);
+            listFragment = EventListFragment.newInstance(presenter);
         }
         if (findViewById(R.id.fragment_container) != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).commit();
@@ -87,7 +123,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -104,6 +140,8 @@ public class MainActivity extends AppCompatActivity
             } else {
                 Snackbar.make(getWindow().getDecorView(), "Adding event success.", Snackbar.LENGTH_SHORT).show();
             }
+        } else if (requestCode == LIMIT_ACTIVITY && resultCode == RESULT_OK) {
+            // TODO
         }
     }
 
@@ -141,8 +179,16 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_logout) {
+            userInfo = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = userInfo.edit();
+            editor.putBoolean("isLoggedIn", false);
+            editor.remove("id");
+            editor.remove("name");
+            editor.remove("email");
+            editor.remove("type");
+            editor.commit();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

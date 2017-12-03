@@ -1,12 +1,12 @@
-package ca.wlu.hztw.myschedule.edit;
+package ca.wlu.hztw.myschedule.event;
 
 import ca.wlu.hztw.myschedule.data.Event;
 import ca.wlu.hztw.myschedule.data.EventRepository;
 
-public class EditPresenter {
+public class EventPresenter {
     private EventRepository repository;
 
-    public EditPresenter(EventRepository repository) {
+    public EventPresenter(EventRepository repository) {
         this.repository = repository;
     }
 

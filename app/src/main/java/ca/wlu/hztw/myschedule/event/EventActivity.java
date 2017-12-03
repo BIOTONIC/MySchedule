@@ -1,4 +1,4 @@
-package ca.wlu.hztw.myschedule.edit;
+package ca.wlu.hztw.myschedule.event;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,13 +20,13 @@ import com.githang.statusbar.StatusBarCompat;
 
 import java.util.Calendar;
 
-public class EditActivity extends AppCompatActivity implements
+public class EventActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private int pos;
-    private EditPresenter presenter;
+    private EventPresenter presenter;
     private EditText editTitle;
-    private EditText editTname;
+    private EditText editPerson;
     private EditText editDate;
     private EditText editTime;
     private EditText editNote;
@@ -34,34 +34,37 @@ public class EditActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_event);
 
         // presenter-----------------------------------------------------------
-        presenter = new EditPresenter(EventRepository.getInstance());
+        presenter = new EventPresenter(EventRepository.getInstance());
 
         // toolbar-------------------------------------------------------------
         ColorManager colorManager = ColorManager.getInstance(getResources());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.edit_toolbar);
-        toolbar.setBackgroundColor(colorManager.getMuted());
-        StatusBarCompat.setStatusBarColor(this, colorManager.getMuted());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.event_toolbar);
+        toolbar.setBackgroundColor(colorManager.getVibrant());
+        StatusBarCompat.setStatusBarColor(this, colorManager.getVibrant());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // find view-----------------------------------------------------------
-        editTitle = (EditText) findViewById(R.id.edit_title);
-        editTname = (EditText) findViewById(R.id.edit_tname);
-        editDate = (EditText) findViewById(R.id.edit_date);
-        editTime = (EditText) findViewById(R.id.edit_time);
+        editTitle = (EditText) findViewById(R.id.cell_event_title);
+        editPerson = (EditText) findViewById(R.id.event_person);
+        if (MainActivity.type == 1) {
+            editPerson.setHint("Student");
+        }
+        editDate = (EditText) findViewById(R.id.event_date);
+        editTime = (EditText) findViewById(R.id.event_time);
         editNote = (EditText) findViewById(R.id.edit_note);
-        Button editConfirm = (Button) findViewById(R.id.edit_confirm);
-        editConfirm.setBackgroundColor(colorManager.getMuted());
+        Button editConfirm = (Button) findViewById(R.id.event_confirm);
+        editConfirm.setBackgroundColor(colorManager.getVibrant());
 
         // set value-----------------------------------------------------------
         pos = getIntent().getIntExtra(MainActivity.EDIT_PARAM, -1);
         if (pos >= 0) {
             Event event = presenter.getEvent(pos);
             editTitle.setText(event.getTitle());
-            editTname.setText(event.getTname());
+            editPerson.setText(event.getTname());
             editDate.setText(event.getDate());
             editTime.setText(event.getTimeDuration());
             editNote.setText(event.getNote());
@@ -73,7 +76,7 @@ public class EditActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = com.borax12.materialdaterangepicker.date.DatePickerDialog.newInstance(
-                        EditActivity.this,
+                        EventActivity.this,
                         now.get(Calendar.YEAR),
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
@@ -89,7 +92,7 @@ public class EditActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Calendar now = Calendar.getInstance();
                 TimePickerDialog tpd = TimePickerDialog.newInstance(
-                        EditActivity.this,
+                        EventActivity.this,
                         now.get(Calendar.HOUR_OF_DAY),
                         now.get(Calendar.MINUTE),
                         false
@@ -108,7 +111,7 @@ public class EditActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 String title = editTitle.getText().toString();
-                String tname = editTname.getText().toString();
+                String tname = editPerson.getText().toString();
                 String date = editDate.getText().toString();
                 String time = editTime.getText().toString();
                 String note = editNote.getText().toString();
@@ -118,7 +121,7 @@ public class EditActivity extends AppCompatActivity implements
                     presenter.addEvent(title, tname, date, time, note);
                 }
                 Intent intent = new Intent();
-                intent.putExtra(MainActivity.EDIT_PARAM,pos);
+                intent.putExtra(MainActivity.EDIT_PARAM, pos);
                 setResult(RESULT_OK, intent);
                 finish();
             }

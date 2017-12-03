@@ -14,7 +14,7 @@ public class MainPresenter implements Serializable {
         this.repository = repository;
     }
 
-    public void onBindListViewHolder(MainRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindListViewHolder(EventListRecyclerAdapter.ViewHolder holder, int position) {
         holder.setEventTitle(repository.getTitle(position));
         holder.setEventDesc(repository.getDesc(position));
     }

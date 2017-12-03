@@ -10,19 +10,19 @@ import android.widget.TextView;
 import ca.wlu.hztw.myschedule.R;
 import ca.wlu.hztw.myschedule.util.ColorManager;
 
-public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder> {
+public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecyclerAdapter.ViewHolder> {
 
     private final MainPresenter presenter;
     private final MainContract.ItemClickListener listener;
 
-    public MainRecyclerAdapter(MainPresenter presenter, MainContract.ItemClickListener listener) {
+    public EventListRecyclerAdapter(MainPresenter presenter, MainContract.ItemClickListener listener) {
         this.presenter = presenter;
         this.listener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_event_main, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_event_list, parent, false);
         final ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -47,11 +47,11 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         public ViewHolder(View itemView) {
             super(itemView);
 
-            cardView = itemView.findViewById(R.id.event_card);
-            eventTitle = itemView.findViewById(R.id.event_title);
-            eventDesc = itemView.findViewById(R.id.event_desc);
-            doneBtn = itemView.findViewById(R.id.done_btn);
-            dropBtn = itemView.findViewById(R.id.drop_btn);
+            cardView = itemView.findViewById(R.id.cell_event_card);
+            eventTitle = itemView.findViewById(R.id.cell_event_title);
+            eventDesc = itemView.findViewById(R.id.cell_event_desc);
+            doneBtn = itemView.findViewById(R.id.cell_event_done);
+            dropBtn = itemView.findViewById(R.id.cell_event_drop);
 
             ColorManager colorManager = ColorManager.getInstance(itemView.getResources());
             doneBtn.setBackgroundColor(colorManager.getVibrant());
@@ -72,16 +72,16 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.event_card:
+                case R.id.cell_event_card:
                     listener.onItemClick(v, getLayoutPosition());
                     break;
-                case R.id.done_btn:
+                case R.id.cell_event_done:
                     int pos = getLayoutPosition();
                     if (presenter.doneEvent(v, pos)) {
                         notifyItemRemoved(pos);
                     }
                     break;
-                case R.id.drop_btn:
+                case R.id.cell_event_drop:
                     pos = getLayoutPosition();
                     if (presenter.dropEvent(v, pos)) {
                         notifyItemRemoved(pos);

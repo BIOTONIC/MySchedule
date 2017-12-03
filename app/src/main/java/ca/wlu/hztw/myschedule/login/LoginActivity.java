@@ -3,66 +3,60 @@ package ca.wlu.hztw.myschedule.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.*;
 
 import ca.wlu.hztw.myschedule.R;
+import ca.wlu.hztw.myschedule.main.MainActivity;
+import ca.wlu.hztw.myschedule.util.ColorManager;
+import com.githang.statusbar.StatusBarCompat;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import static ca.wlu.hztw.myschedule.main.MainActivity.PREFS_NAME;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
+public class LoginActivity extends AppCompatActivity {
+
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "qwer:qwer", "1234:1234"
     };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
+
     private UserLoginTask authTask = null;
 
-    // UI references.
     private AutoCompleteTextView nameView;
     private EditText passwordView;
-    private View progressView;
+    private ProgressBar progressBar;
     private View loginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
-        nameView = (AutoCompleteTextView) findViewById(R.id.login_name);
-        populateAutoComplete();
 
+        // toolbar-------------------------------------------------------------
+        ColorManager colorManager = ColorManager.getInstance(getResources());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.login_toolbar);
+        toolbar.setBackgroundColor(colorManager.getMuted());
+        StatusBarCompat.setStatusBarColor(this, colorManager.getMuted());
+        setSupportActionBar(toolbar);
+
+        // background color----------------------------------------------------
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.login_linear_layout);
+        linearLayout.setBackgroundColor(colorManager.getMuted());
+
+        // find view & set listener--------------------------------------------
+        nameView = (AutoCompleteTextView) findViewById(R.id.login_name);
         passwordView = (EditText) findViewById(R.id.login_password);
         passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -84,45 +78,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         loginFormView = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
+        progressBar = (ProgressBar) findViewById(R.id.login_progress);
+        progressBar.setProgressTintList(ColorStateList.valueOf(colorManager.getVibrant()));
     }
 
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.exit(0);
     }
 
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
+    // check text format before login
     private void attemptLogin() {
         if (authTask != null) {
             return;
         }
 
-        // Reset errors.
+        // reset errors.
         nameView.setError(null);
         passwordView.setError(null);
 
-        // Store values at the time of the login attempt.
+        // store values at the time of the login attempt.
         String email = nameView.getText().toString();
         String password = passwordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
+        // check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             passwordView.setError("Invalid Password");
             focusView = passwordView;
             cancel = true;
         }
 
-        // Check for a valid email address.
+        // check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            nameView.setError("Filed Empty");
+            nameView.setError("Empty Name");
             focusView = nameView;
             cancel = true;
         } else if (!isEmailValid(email)) {
@@ -132,11 +124,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+            // there was an error
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
+            // show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
             authTask = new UserLoginTask(email, password);
@@ -145,13 +136,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.length() > 2;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 2;
     }
 
     /**
@@ -174,74 +163,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
 
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressBar.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        nameView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -250,12 +185,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
+        private final String email;
+        private final String password;
 
         UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+            this.email = email;
+            this.password = password;
         }
 
         @Override
@@ -271,13 +206,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                if (pieces[0].equals(email)) {
+                    if (!pieces[1].equals(password)) {
+                        return false;
+                    }
+                    SharedPreferences userInfo = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = userInfo.edit();
+                    editor.putBoolean("isLoggedIn", true);
+                    if (email.equals("qwer")) {
+                        editor.putString("name", "qwer");
+                        editor.putInt("id", 1);
+                        editor.putString("email", "qwer@mylaurier.ca");
+                        editor.putInt("type", 0);// student 0
+
+                    } else {
+                        editor.putString("name", "1234");
+                        editor.putInt("id", 2);
+                        editor.putString("email", "1234@mylaurier.ca");
+                        editor.putInt("type", 1);// teacher 1
+                    }
+                    editor.commit();
+                    return true;
                 }
             }
-
-            // TODO: register the new account here.
             return true;
         }
 
@@ -288,6 +239,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
+                startActivity(new Intent(getBaseContext(), MainActivity.class));
             } else {
                 passwordView.setError("Invalid Password");
                 passwordView.requestFocus();

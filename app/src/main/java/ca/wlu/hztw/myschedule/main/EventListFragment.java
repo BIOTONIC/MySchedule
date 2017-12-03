@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.*;
 import android.widget.ImageView;
 import ca.wlu.hztw.myschedule.R;
-import ca.wlu.hztw.myschedule.edit.EditActivity;
+import ca.wlu.hztw.myschedule.event.EventActivity;
 import ca.wlu.hztw.myschedule.util.ColorManager;
 import ca.wlu.hztw.myschedule.util.SimpleDividerItemDecoration;
 import ca.wlu.hztw.myschedule.util.SwipeItemLayout;
@@ -18,17 +18,17 @@ import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
 
-public class MainListFragment extends Fragment implements MainContract.ItemClickListener {
+public class EventListFragment extends Fragment implements MainContract.ItemClickListener {
     private final static String PRESENTER = "presenter";
 
     private MainPresenter presenter;
 
-    public MainListFragment() {
+    public EventListFragment() {
         // Required empty public constructor
     }
 
-    public static MainListFragment newInstance(Serializable presenter) {
-        MainListFragment fragment = new MainListFragment();
+    public static EventListFragment newInstance(Serializable presenter) {
+        EventListFragment fragment = new EventListFragment();
         Bundle args = new Bundle();
         args.putSerializable(PRESENTER, presenter);
         fragment.setArguments(args);
@@ -39,19 +39,19 @@ public class MainListFragment extends Fragment implements MainContract.ItemClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_list_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         // get presenter
         presenter = (MainPresenter) getArguments().getSerializable(PRESENTER);
 
         // RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.main_recycler);
+        RecyclerView recyclerView = view.findViewById(R.id.event_list_recycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager recyclerLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(recyclerLayoutManager);
 
         // adapter
-        MainRecyclerAdapter recyclerAdapter = new MainRecyclerAdapter(presenter, this);
+        EventListRecyclerAdapter recyclerAdapter = new EventListRecyclerAdapter(presenter, this);
         recyclerView.setAdapter(recyclerAdapter);
 
         // divider line
@@ -67,7 +67,7 @@ public class MainListFragment extends Fragment implements MainContract.ItemClick
         // set image for collapsing toolbar
         ImageView imageView = getActivity().findViewById(R.id.backdrop);
         Glide.with(this)
-                .load(ColorManager.THEME_PIC)
+                .load(ColorManager.getPicture())
                 .into(imageView);
         ColorManager colorManager = ColorManager.getInstance(getActivity().getResources());
         collapsingToolbar.setStatusBarScrimColor(colorManager.getMuted());
@@ -80,7 +80,7 @@ public class MainListFragment extends Fragment implements MainContract.ItemClick
     // when item of recycler view is clicked
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), EditActivity.class);
+        Intent intent = new Intent(getActivity(), EventActivity.class);
         intent.putExtra(MainActivity.EDIT_PARAM, position);
         getActivity().startActivityForResult(intent, MainActivity.EDIT_ACTIVITY);
     }

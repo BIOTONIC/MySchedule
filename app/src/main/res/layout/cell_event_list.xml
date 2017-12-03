@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ca.wlu.hztw.myschedule.util.SwipeItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto">
+<ca.wlu.hztw.myschedule.util.SwipeItemLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
-            android:id="@+id/event_card"
+            android:id="@+id/cell_event_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="?android:colorBackground"
@@ -16,7 +17,7 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:id="@+id/event_title"
+                    android:id="@+id/cell_event_title"
                     android:text=""
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
             />
 
             <TextView
-                    android:id="@+id/event_desc"
+                    android:id="@+id/cell_event_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -42,7 +43,7 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:background="#00ff00"
-                android:id="@+id/done_btn"
+                android:id="@+id/cell_event_done"
                 android:text="DONE"
                 android:textSize="16sp"
                 android:textColor="#ffffff"
@@ -53,7 +54,7 @@
                 android:layout_height="match_parent"
                 android:background="#ff5100"
                 android:layout_marginStart="80dp"
-                android:id="@+id/drop_btn"
+                android:id="@+id/cell_event_drop"
                 android:text="DROP"
                 android:textSize="16sp"
                 android:textColor="#ffffff"
