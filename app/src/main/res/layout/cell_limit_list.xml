@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
             android:id="@+id/cell_limit_card"
@@ -13,7 +13,8 @@
             app:cardBackgroundColor="?android:colorBackground"
             app:contentPaddingLeft="16dp"
             app:contentPaddingRight="16dp"
-            app:contentPaddingTop="16dp">
+            app:contentPaddingTop="8dp"
+            app:contentPaddingBottom="8dp">
 
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
@@ -30,21 +31,22 @@
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:id="@+id/cell_limit_desc"
-                      android:text="Every Mon Wed Fir"
+                      android:text="Every Mon Tue Wed Thu Fir Sat Sun"
                       android:textSize="20sp"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
-    <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <Button
-                android:layout_width="80dp"
+                android:layout_width="90dp"
                 android:layout_height="match_parent"
                 android:background="#ff5100"
-                android:layout_marginStart="80dp"
-                android:id="@+id/cell_limit_delete"
-                android:text="DROP"
+                android:id="@+id/cell_limit_discard"
+                android:text="DISCARD"
                 android:textSize="16sp"
                 android:textColor="#ffffff"
                 android:layout_gravity="end"/>

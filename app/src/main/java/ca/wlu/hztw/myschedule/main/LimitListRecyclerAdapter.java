@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import ca.wlu.hztw.myschedule.R;
+import ca.wlu.hztw.myschedule.util.ColorManager;
 
 public class LimitListRecyclerAdapter extends RecyclerView.Adapter<LimitListRecyclerAdapter.ViewHolder> {
 
@@ -37,21 +38,22 @@ public class LimitListRecyclerAdapter extends RecyclerView.Adapter<LimitListRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private CardView cardView;
+        private CardView limitCard;
         private TextView limitTime;
         private TextView limitDesc;
-        private Button deleteBtn;
+        private Button limitDiscard;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            cardView = itemView.findViewById(R.id.cell_limit_card);
+            limitCard = itemView.findViewById(R.id.cell_limit_card);
             limitTime = itemView.findViewById(R.id.cell_limit_time);
             limitDesc = itemView.findViewById(R.id.cell_limit_desc);
-            deleteBtn = itemView.findViewById(R.id.cell_limit_delete);
+            limitDiscard = itemView.findViewById(R.id.cell_limit_discard);
 
-            cardView.setOnClickListener(this);
-            deleteBtn.setOnClickListener(this);
+
+            limitCard.setOnClickListener(this);
+            limitDiscard.setOnClickListener(this);
         }
 
         public void setLimitTime(String time) {
@@ -66,10 +68,10 @@ public class LimitListRecyclerAdapter extends RecyclerView.Adapter<LimitListRecy
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.cell_limit_card:
-                    listener.onItemClick(v, getLayoutPosition());
+                    listener.onItemClick(v, getAdapterPosition());
                     break;
-                case R.id.cell_limit_delete:
-                    int pos = getLayoutPosition();
+                case R.id.cell_limit_discard:
+                    int pos = getAdapterPosition();
                     if (presenter.deleteLimit(v, pos)) {
                         notifyItemRemoved(pos);
                     }

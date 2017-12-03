@@ -38,27 +38,27 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final CardView cardView;
+        private final CardView evendCard;
         private final TextView eventTitle;
         private final TextView eventDesc;
-        private final Button doneBtn;
-        private final Button discardBtn;
+        private final Button eventDone;
+        private final Button eventDiscard;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            cardView = itemView.findViewById(R.id.cell_event_card);
+            evendCard = itemView.findViewById(R.id.cell_event_card);
             eventTitle = itemView.findViewById(R.id.cell_event_title);
             eventDesc = itemView.findViewById(R.id.cell_event_desc);
-            doneBtn = itemView.findViewById(R.id.cell_event_done);
-            discardBtn = itemView.findViewById(R.id.cell_event_discard);
+            eventDone = itemView.findViewById(R.id.cell_event_done);
+            eventDiscard = itemView.findViewById(R.id.cell_event_discard);
 
             ColorManager colorManager = ColorManager.getInstance(itemView.getResources());
-            doneBtn.setBackgroundColor(colorManager.getVibrant());
+            eventDone.setBackgroundColor(colorManager.getVibrant());
 
-            cardView.setOnClickListener(this);
-            doneBtn.setOnClickListener(this);
-            discardBtn.setOnClickListener(this);
+            evendCard.setOnClickListener(this);
+            eventDone.setOnClickListener(this);
+            eventDiscard.setOnClickListener(this);
         }
 
         public void setEventTitle(String title) {
@@ -73,16 +73,16 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.cell_event_card:
-                    listener.onItemClick(v, getLayoutPosition());
+                    listener.onItemClick(v, getAdapterPosition());
                     break;
                 case R.id.cell_event_done:
-                    int pos = getLayoutPosition();
+                    int pos = getAdapterPosition();
                     if (presenter.doneEvent(v, pos)) {
                         notifyItemRemoved(pos);
                     }
                     break;
                 case R.id.cell_event_discard:
-                    pos = getLayoutPosition();
+                    pos = getAdapterPosition();
                     if (presenter.discardEvent(v, pos)) {
                         notifyItemRemoved(pos);
                     }

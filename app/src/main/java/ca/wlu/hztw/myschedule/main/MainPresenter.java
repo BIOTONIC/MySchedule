@@ -32,8 +32,8 @@ public class MainPresenter implements Serializable {
     }
 
     public void onBindLimitListViewHolder(LimitListRecyclerAdapter.ViewHolder holder, int position) {
-        holder.setLimitTime("12:00-13:00");
-        holder.setLimitDesc("Every Mon Wed Fri");
+        holder.setLimitTime("12:00-" + (13 + position) + ":00");
+        holder.setLimitDesc("Every Mon Tue Wed Thu Fri Sat Sun");
     }
 
     public int getLimitListItemCount() {
