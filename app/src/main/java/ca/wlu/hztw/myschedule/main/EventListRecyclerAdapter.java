@@ -29,12 +29,12 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        presenter.onBindListViewHolder(holder, position);
+        presenter.onBindEventListViewHolder(holder, position);
     }
 
     @Override
     public int getItemCount() {
-        return presenter.getListItemCount();
+        return presenter.getEventListItemCount();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -42,7 +42,7 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
         private final TextView eventTitle;
         private final TextView eventDesc;
         private final Button doneBtn;
-        private final Button dropBtn;
+        private final Button discardBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -51,14 +51,14 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
             eventTitle = itemView.findViewById(R.id.cell_event_title);
             eventDesc = itemView.findViewById(R.id.cell_event_desc);
             doneBtn = itemView.findViewById(R.id.cell_event_done);
-            dropBtn = itemView.findViewById(R.id.cell_event_drop);
+            discardBtn = itemView.findViewById(R.id.cell_event_discard);
 
             ColorManager colorManager = ColorManager.getInstance(itemView.getResources());
             doneBtn.setBackgroundColor(colorManager.getVibrant());
 
             cardView.setOnClickListener(this);
             doneBtn.setOnClickListener(this);
-            dropBtn.setOnClickListener(this);
+            discardBtn.setOnClickListener(this);
         }
 
         public void setEventTitle(String title) {
@@ -81,9 +81,9 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
                         notifyItemRemoved(pos);
                     }
                     break;
-                case R.id.cell_event_drop:
+                case R.id.cell_event_discard:
                     pos = getLayoutPosition();
-                    if (presenter.dropEvent(v, pos)) {
+                    if (presenter.discardEvent(v, pos)) {
                         notifyItemRemoved(pos);
                     }
                     break;

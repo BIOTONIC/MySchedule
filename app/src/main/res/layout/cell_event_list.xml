@@ -54,8 +54,8 @@
                 android:layout_height="match_parent"
                 android:background="#ff5100"
                 android:layout_marginStart="80dp"
-                android:id="@+id/cell_event_drop"
-                android:text="DROP"
+                android:id="@+id/cell_event_discard"
+                android:text="DISCARD"
                 android:textSize="16sp"
                 android:textColor="#ffffff"
                 android:layout_gravity="end"/>

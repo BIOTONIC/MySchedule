@@ -32,12 +32,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MainPresenter presenter;
-    private EventListFragment listFragment;
+    private EventListFragment eventListFragment;
+    private LimitListFragment limitListFragment;
     private SharedPreferences userInfo;
 
     public final static int EDIT_ACTIVITY = 215;
     public final static int LIMIT_ACTIVITY = 920;
     public final static String EDIT_PARAM = "edit_param";
+    public final static String LIMIT_PARAM = "limit_param";
     public final static String PREFS_NAME = "prefs_name";
 
     public static boolean isLoggedIn;
@@ -108,22 +110,36 @@ public class MainActivity extends AppCompatActivity
         TextView headerEmail = navigationView.getHeaderView(0).findViewById(R.id.header_email);
         headerEmail.setText(email);
 
+        // navigation menu-----------------------------------------------------
+        Menu menu = navigationView.getMenu();
+        if (type == 1) { // teacher
+            MenuItem completed = menu.findItem(R.id.nav_completed);
+            completed.setVisible(false);
+            MenuItem discarded = menu.findItem(R.id.nav_discarded);
+            discarded.setVisible(false);
+        } else { // student
+            MenuItem schedule = menu.findItem(R.id.nav_schedule);
+            schedule.setVisible(false);
+            MenuItem available = menu.findItem(R.id.nav_available_time);
+            available.setVisible(false);
+        }
+
         // presenter-----------------------------------------------------------
         presenter = new MainPresenter(EventRepository.getInstance());
 
-        // EventListFragment----------------------------------------------------
-        listFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
-        if (listFragment == null) {
-            listFragment = EventListFragment.newInstance(presenter);
+        // EventListFragment---------------------------------------------------
+        eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
+        if (eventListFragment == null) {
+            eventListFragment = EventListFragment.newInstance(presenter);
         }
         if (findViewById(R.id.fragment_container) != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, eventListFragment).commit();
         }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -169,15 +185,27 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_completed) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_discarded) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_schedule) {
+            eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
+            if (eventListFragment == null) {
+                eventListFragment = EventListFragment.newInstance(presenter);
+            }
+            if (findViewById(R.id.fragment_container) != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, eventListFragment).commit();
+            }
+        } else if (id == R.id.nav_available_time) {
+            limitListFragment = (LimitListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_limit_list);
+            if (limitListFragment == null) {
+                limitListFragment = LimitListFragment.newInstance(presenter);
+            }
+            if (findViewById(R.id.fragment_container) != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, limitListFragment).commit();
+            }
+        } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_logout) {
             userInfo = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);

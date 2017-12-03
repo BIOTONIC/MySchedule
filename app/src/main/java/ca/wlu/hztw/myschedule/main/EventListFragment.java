@@ -63,7 +63,7 @@ public class EventListFragment extends Fragment implements MainContract.ItemClic
 
         // collapsing toolbar
         CollapsingToolbarLayout collapsingToolbar = getActivity().findViewById(R.id.main_collapsing_toolbar);
-        collapsingToolbar.setTitle("MySchedule");
+        collapsingToolbar.setTitle("My Schedule");
         // set image for collapsing toolbar
         ImageView imageView = getActivity().findViewById(R.id.backdrop);
         Glide.with(this)
@@ -87,9 +87,8 @@ public class EventListFragment extends Fragment implements MainContract.ItemClic
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_list_main, menu);
+        inflater.inflate(R.menu.fragment_event_list, menu);
         menu.getItem(0).setVisible(true);
-        menu.getItem(1).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -98,9 +97,6 @@ public class EventListFragment extends Fragment implements MainContract.ItemClic
         switch (item.getItemId()) {
             case R.id.action_calender:
                 Snackbar.make(getActivity().getWindow().getDecorView(), "Show in Calender", Snackbar.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_hide:
-                Snackbar.make(getActivity().getWindow().getDecorView(), "Hide Completed Events", Snackbar.LENGTH_SHORT).show();
                 return true;
         }
         return false;

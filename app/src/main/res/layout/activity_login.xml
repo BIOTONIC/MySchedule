@@ -60,7 +60,7 @@
                 android:layout_marginBottom="8dp"
                 app:mtf_labelColor="#666"
                 app:mtf_cardCollapsedHeight="2dp"
-                app:mtf_image="@drawable/ic_account_box_black_24px"
+                app:mtf_image="@drawable/ic_name"
                 android:layout_gravity="center_horizontal">
 
             <AutoCompleteTextView
@@ -80,7 +80,7 @@
                 android:layout_marginBottom="8dp"
                 app:mtf_labelColor="#666"
                 app:mtf_cardCollapsedHeight="2dp"
-                app:mtf_image="@drawable/ic_https_black_24px"
+                app:mtf_image="@drawable/ic_password"
                 android:layout_gravity="center_horizontal">
 
             <EditText

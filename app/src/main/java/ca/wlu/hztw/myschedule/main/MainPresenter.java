@@ -14,12 +14,12 @@ public class MainPresenter implements Serializable {
         this.repository = repository;
     }
 
-    public void onBindListViewHolder(EventListRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindEventListViewHolder(EventListRecyclerAdapter.ViewHolder holder, int position) {
         holder.setEventTitle(repository.getTitle(position));
         holder.setEventDesc(repository.getDesc(position));
     }
 
-    public int getListItemCount() {
+    public int getEventListItemCount() {
         return repository.getSize();
     }
 
@@ -27,11 +27,20 @@ public class MainPresenter implements Serializable {
         return false;
     }
 
-    public boolean dropEvent(View view, int pos) {
+    public boolean discardEvent(View view, int pos) {
         return false;
     }
 
-    public Event getEvent(int pos){
-        return repository.getEvent(pos);
+    public void onBindLimitListViewHolder(LimitListRecyclerAdapter.ViewHolder holder, int position) {
+        holder.setLimitTime("12:00-13:00");
+        holder.setLimitDesc("Every Mon Wed Fri");
+    }
+
+    public int getLimitListItemCount() {
+        return 5;
+    }
+
+    public boolean deleteLimit(View view, int pos) {
+        return false;
     }
 }

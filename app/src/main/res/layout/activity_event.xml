@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal">
                 <ImageView
-                        android:src="@drawable/ic_account_box_black_24px"
+                        android:src="@drawable/ic_name"
                         android:layout_marginTop="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                     <ImageView
-                            android:src="@drawable/ic_insert_invitation_black_24px"
+                            android:src="@drawable/ic_date"
                             android:layout_marginTop="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                         android:orientation="horizontal">
 
                     <ImageView
-                            android:src="@drawable/ic_schedule_black_24px"
+                            android:src="@drawable/ic_time"
                             android:layout_marginTop="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                 <ImageView
-                        android:src="@drawable/ic_content_paste_black_24px"
+                        android:src="@drawable/ic_note"
                         android:layout_marginTop="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_width="wrap_content"
