@@ -29,7 +29,7 @@ import static ca.wlu.hztw.myschedule.main.MainActivity.PREFS_NAME;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "qwer:qwer", "1234:1234"
+            "student:student", "admin:admin"
     };
 
     private UserLoginTask authTask = null;
@@ -213,16 +213,16 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences userInfo = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                     SharedPreferences.Editor editor = userInfo.edit();
                     editor.putBoolean("isLoggedIn", true);
-                    if (email.equals("qwer")) {
-                        editor.putString("name", "qwer");
+                    if (email.equals("student")) {
+                        editor.putString("name", "student");
                         editor.putInt("id", 1);
-                        editor.putString("email", "qwer@mylaurier.ca");
+                        editor.putString("email", "student@mylaurier.ca");
                         editor.putInt("type", 0);// student 0
 
                     } else {
-                        editor.putString("name", "1234");
+                        editor.putString("name", "admin");
                         editor.putInt("id", 2);
-                        editor.putString("email", "1234@mylaurier.ca");
+                        editor.putString("email", "admin@mylaurier.ca");
                         editor.putInt("type", 1);// teacher 1
                     }
                     editor.commit();

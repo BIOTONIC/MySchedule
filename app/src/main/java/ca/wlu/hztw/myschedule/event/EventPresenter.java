@@ -35,7 +35,7 @@ public class EventPresenter {
         String[] strs = time.split("-");
         String startTime = strs[0];
         String endTime = strs[1];
-        Event event = new Event("sname", tname, date, startTime, endTime, title, note);
+        Event event = new Event(MainActivity.name, tname, date, startTime, endTime, title, note);
         repository.addNewEvent(event);
     }
 }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import ca.wlu.hztw.myschedule.R;
 import ca.wlu.hztw.myschedule.about.AboutActivity;
 import ca.wlu.hztw.myschedule.data.EventRepository;
+import ca.wlu.hztw.myschedule.data.LimitRepository;
 import ca.wlu.hztw.myschedule.event.EventActivity;
 import ca.wlu.hztw.myschedule.limit.LimitActivity;
 import ca.wlu.hztw.myschedule.login.LoginActivity;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 if (type == 1) {
                     Intent intent = new Intent(getApplication(), LimitActivity.class);
+                    intent.putExtra(EventActivity.POS, -1);
                     startActivityForResult(intent, LIMIT_ACTIVITY);
                 } else if (filter == 0) {
                     Intent intent = new Intent(getApplication(), EventActivity.class);
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity
         LinearLayout linearLayout = navigationView.getHeaderView(0).findViewById(R.id.header_layout);
         linearLayout.setBackgroundTintList(ColorStateList.valueOf(colorManager.getVibrant()));
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound(name.length()>0?name.substring(0, 1):"a", colorManager.getMuted());
+                .buildRound(name.length() > 0 ? name.substring(0, 1) : "a", colorManager.getMuted());
         ImageView headerImage = navigationView.getHeaderView(0).findViewById(R.id.header_image);
         headerImage.setImageDrawable(drawable);
         TextView headerName = navigationView.getHeaderView(0).findViewById(R.id.header_name);
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // presenter-----------------------------------------------------------
-        presenter = new MainPresenter(EventRepository.getInstance());
+        presenter = new MainPresenter(EventRepository.getInstance(), LimitRepository.getInstance());
 
         // EventListFragment---------------------------------------------------
         eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);

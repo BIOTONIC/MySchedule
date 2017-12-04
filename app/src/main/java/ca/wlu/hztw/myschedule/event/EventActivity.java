@@ -66,7 +66,11 @@ public class EventActivity extends AppCompatActivity implements
         if (pos >= 0) {
             Event event = presenter.getEvent(pos);
             editTitle.setText(event.getTitle());
-            editPerson.setText(event.getTname());
+            if (MainActivity.filter == 0) {
+                editPerson.setText(event.getTname());
+            } else {
+                editPerson.setText(event.getSname());
+            }
             editDate.setText(event.getDate());
             editTime.setText(event.getTimeDuration());
             editNote.setText(event.getNote());

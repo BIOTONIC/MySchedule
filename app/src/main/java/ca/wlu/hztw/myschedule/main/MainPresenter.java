@@ -2,44 +2,47 @@ package ca.wlu.hztw.myschedule.main;
 
 import android.view.View;
 import ca.wlu.hztw.myschedule.data.EventRepository;
+import ca.wlu.hztw.myschedule.data.LimitRepository;
 
 import java.io.Serializable;
 
 public class MainPresenter implements Serializable {
 
-    private transient EventRepository repository;
+    private transient EventRepository eRepository;
+    private transient LimitRepository lRepository;
 
-    public MainPresenter(EventRepository repository) {
-        this.repository = repository;
+    public MainPresenter(EventRepository eRepository, LimitRepository lRepository) {
+        this.eRepository = eRepository;
+        this.lRepository = lRepository;
     }
 
     public void onBindEventListViewHolder(EventListRecyclerAdapter.ViewHolder holder, int position) {
-        holder.setEventTitle(repository.getTitle(position, MainActivity.filter));
-        holder.setEventDesc(repository.getDesc(position, MainActivity.filter));
+        holder.setEventTitle(eRepository.getTitle(position, MainActivity.filter));
+        holder.setEventDesc(eRepository.getDesc(position, MainActivity.filter));
     }
 
     public int getEventListItemCount() {
-        return repository.getSize(MainActivity.filter);
+        return eRepository.getSize(MainActivity.filter);
     }
 
     public boolean doneEvent(View view, int pos) {
-        return repository.completeEvent(pos);
+        return eRepository.completeEvent(pos);
     }
 
     public boolean discardEvent(View view, int pos) {
-        return repository.discardEvent(pos);
+        return eRepository.discardEvent(pos);
     }
 
     public void onBindLimitListViewHolder(LimitListRecyclerAdapter.ViewHolder holder, int position) {
-        holder.setLimitTime("12:00-" + (13 + position) + ":00");
-        holder.setLimitDesc("Every Mon Tue Wed Thu Fri Sat Sun");
+        holder.setLimitTime(lRepository.getTime(position));
+        holder.setLimitDesc(lRepository.getDate(position));
     }
 
     public int getLimitListItemCount() {
-        return 5;
+        return lRepository.getSize();
     }
 
     public boolean deleteLimit(View view, int pos) {
-        return false;
+        return lRepository.discardLimit(pos);
     }
 }

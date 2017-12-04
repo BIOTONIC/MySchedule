@@ -1,5 +1,7 @@
 package ca.wlu.hztw.myschedule.data;
 
+import ca.wlu.hztw.myschedule.main.MainActivity;
+
 import java.io.Serializable;
 
 public class Event implements Serializable {
@@ -35,14 +37,6 @@ public class Event implements Serializable {
         return date;
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
     public String getTimeDuration() {
         return startTime + "-" + endTime;
     }
@@ -58,8 +52,14 @@ public class Event implements Serializable {
     public String getDesc() {
         String sep = " · ";
         String result = "";
-        if (!tname.equals("") && tname != null) {
-            result += tname;
+        if (MainActivity.filter == 0) {
+            if (!tname.equals("") && tname != null) {
+                result += tname;
+            }
+        } else {
+            if (!sname.equals("") && sname != null) {
+                result += sname;
+            }
         }
         if (!date.equals("") && date != null) {
             result += sep;

@@ -1,6 +1,7 @@
 package ca.wlu.hztw.myschedule.limit;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import ca.wlu.hztw.myschedule.R;
+import ca.wlu.hztw.myschedule.data.EventRepository;
+import ca.wlu.hztw.myschedule.data.LimitRepository;
+import ca.wlu.hztw.myschedule.event.EventPresenter;
 import ca.wlu.hztw.myschedule.util.ColorManager;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.githang.statusbar.StatusBarCompat;
@@ -19,6 +23,10 @@ import java.util.Calendar;
 public class LimitActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener {
 
+    public final static String POS = "pos";
+
+    private int pos;
+    private LimitPresenter presenter;
     private EditText limitDate;
     private EditText limitTime;
     private Button limitConfirm;
@@ -28,9 +36,13 @@ public class LimitActivity extends AppCompatActivity implements DatePickerDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_limit);
 
+        // presenter-----------------------------------------------------------
+        presenter = new LimitPresenter(LimitRepository.getInstance());
+
         // toolbar-------------------------------------------------------------
         ColorManager colorManager = ColorManager.getInstance(getResources());
         Toolbar toolbar = (Toolbar) findViewById(R.id.limit_toolbar);
+        toolbar.setTitle("Select Available Time");
         toolbar.setBackgroundColor(colorManager.getVibrant());
         StatusBarCompat.setStatusBarColor(this, colorManager.getVibrant());
         setSupportActionBar(toolbar);
@@ -40,6 +52,14 @@ public class LimitActivity extends AppCompatActivity implements DatePickerDialog
         limitDate = (EditText) findViewById(R.id.limit_date);
         limitTime = (EditText) findViewById(R.id.limit_time);
         limitConfirm = (Button) findViewById(R.id.limit_confirm);
+        limitConfirm.setBackgroundColor(colorManager.getVibrant());
+
+        // set value-----------------------------------------------------------
+        pos = getIntent().getIntExtra(POS, -1);
+        if(pos>0){
+            limitDate.setText(presenter.getDate(pos));
+            limitDate.setText(presenter.getTime(pos));
+        }
 
         // setOnClickListener--------------------------------------------------
         limitDate.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +100,13 @@ public class LimitActivity extends AppCompatActivity implements DatePickerDialog
                 String time = limitTime.getText().toString();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent data = new Intent();
+        this.setResult(RESULT_CANCELED, data);
     }
 
     @Override
