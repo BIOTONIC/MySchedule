@@ -84,6 +84,11 @@ public class EventListFragment extends Fragment implements MainContract.ItemClic
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+    }
+
     // when item of recycler view is clicked
     @Override
     public void onItemClick(View view, int position) {

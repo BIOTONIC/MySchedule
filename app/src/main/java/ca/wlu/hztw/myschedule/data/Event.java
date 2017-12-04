@@ -58,18 +58,18 @@ public class Event implements Serializable {
     public String getDesc() {
         String sep = " · ";
         String result = "";
-        if (tname != "" && tname != null) {
+        if (!tname.equals("") && tname != null) {
             result += tname;
         }
-        if (date != "" && date != null) {
+        if (!date.equals("") && date != null) {
             result += sep;
             result += date;
         }
-        if (startTime != "" && startTime != null && endTime != "" && endTime != null) {
+        if (!startTime.equals("") && startTime != null && !endTime.equals("") && endTime != null) {
             result += sep;
             result += getTimeDuration();
         }
-        if (note != "" && note != null) {
+        if (!note.equals("") && note != null) {
             result += sep;
             result += "Note";
         }

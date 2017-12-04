@@ -154,6 +154,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
+        if (eventListFragment == null) {
+            eventListFragment = EventListFragment.newInstance(presenter);
+        }
+        limitListFragment = (LimitListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_limit_list);
+        if (limitListFragment == null) {
+            limitListFragment = LimitListFragment.newInstance(presenter);
+        }
+
         if (requestCode == EVENT_ACTIVITY && resultCode == RESULT_OK) {
             int pos = data.getIntExtra(EventActivity.POS, -1);
             if (pos >= 0) {
@@ -161,6 +170,11 @@ public class MainActivity extends AppCompatActivity
             } else {
                 Snackbar.make(getWindow().getDecorView(), "Adding event success.", Snackbar.LENGTH_SHORT).show();
             }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, limitListFragment)
+                    .replace(R.id.fragment_container, eventListFragment)
+                    .commitAllowingStateLoss();;
         } else if (requestCode == LIMIT_ACTIVITY && resultCode == RESULT_OK) {
             // TODO
         }
@@ -187,8 +201,6 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
         eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
         if (eventListFragment == null) {
             eventListFragment = EventListFragment.newInstance(presenter);
@@ -197,6 +209,8 @@ public class MainActivity extends AppCompatActivity
         if (limitListFragment == null) {
             limitListFragment = LimitListFragment.newInstance(presenter);
         }
+
+        int id = item.getItemId();
         if (id == R.id.nav_todo) {
             filter = 0;
             getSupportFragmentManager()
