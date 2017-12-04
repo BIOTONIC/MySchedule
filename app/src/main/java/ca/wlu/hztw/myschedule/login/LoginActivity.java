@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // background color----------------------------------------------------
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.login_linear_layout);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.login_layout);
         linearLayout.setBackgroundColor(colorManager.getMuted());
 
         // find view & set listener--------------------------------------------

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ca.wlu.hztw.myschedule.R;
+import ca.wlu.hztw.myschedule.about.AboutActivity;
 import ca.wlu.hztw.myschedule.data.EventRepository;
 import ca.wlu.hztw.myschedule.event.EventActivity;
 import ca.wlu.hztw.myschedule.limit.LimitActivity;
@@ -174,7 +175,8 @@ public class MainActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.fragment_container, limitListFragment)
                     .replace(R.id.fragment_container, eventListFragment)
-                    .commitAllowingStateLoss();;
+                    .commitAllowingStateLoss();
+            ;
         } else if (requestCode == LIMIT_ACTIVITY && resultCode == RESULT_OK) {
             // TODO
         }
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.nav_about) {
-
+            startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_logout) {
             userInfo = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
             SharedPreferences.Editor editor = userInfo.edit();

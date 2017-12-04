@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
@@ -6,8 +7,8 @@
               android:gravity="center_horizontal"
               android:orientation="vertical"
               android:fitsSystemWindows="true"
-              android:id="@+id/login_layout"
-              tools:context="ca.wlu.hztw.myschedule.login.LoginActivity">
+              android:id="@+id/about_layout"
+              tools:context="ca.wlu.hztw.myschedule.about.AboutActivity">
 
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -16,7 +17,7 @@
             android:theme="@style/AppTheme.Appbar">
 
         <android.support.v7.widget.Toolbar
-                android:id="@+id/login_toolbar"
+                android:id="@+id/about_toolbar"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 app:elevation="0dp"
@@ -34,17 +35,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!-- Login progress -->
-    <ProgressBar
-            android:id="@+id/login_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:visibility="gone"/>
-
     <LinearLayout
-            android:id="@+id/login_form"
+            android:id="@+id/about_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
@@ -60,16 +52,16 @@
                 android:layout_marginBottom="8dp"
                 app:mtf_labelColor="#666"
                 app:mtf_cardCollapsedHeight="2dp"
-                app:mtf_image="@drawable/ic_name"
+                app:mtf_hasFocus="true"
                 android:layout_gravity="center_horizontal">
 
-            <AutoCompleteTextView
-                    android:id="@+id/login_name"
+            <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Name"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"/>
+                    android:hint="Front End"
+                    android:text="Tianran Wang"
+                    android:maxLines="1"
+                    android:enabled="false"/>
 
         </com.github.florent37.materialtextfield.MaterialTextField>
 
@@ -80,29 +72,17 @@
                 android:layout_marginBottom="8dp"
                 app:mtf_labelColor="#666"
                 app:mtf_cardCollapsedHeight="2dp"
-                app:mtf_image="@drawable/ic_password"
+                app:mtf_hasFocus="true"
                 android:layout_gravity="center_horizontal">
 
             <EditText
-                    android:id="@+id/login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:imeActionId="@+id/login"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"/>
+                    android:hint="Back End"
+                    android:text="Hongwei Zhu"
+                    android:maxLines="1"
+                    android:enabled="false"/>
 
         </com.github.florent37.materialtextfield.MaterialTextField>
-
-        <Button
-                android:id="@+id/login_btn"
-                android:backgroundTint="#fff"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="32dp"
-                android:text="Login"
-                android:textSize="16sp"
-                android:layout_gravity="end"/>
     </LinearLayout>
 </LinearLayout>
