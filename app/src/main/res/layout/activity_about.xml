@@ -50,9 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:mtf_labelColor="#666"
+                app:mtf_labelColor="#000"
                 app:mtf_cardCollapsedHeight="2dp"
-                app:mtf_hasFocus="true"
+                app:mtf_hasFocus="false"
                 android:layout_gravity="center_horizontal">
 
             <EditText
@@ -70,9 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:mtf_labelColor="#666"
+                app:mtf_labelColor="#000"
                 app:mtf_cardCollapsedHeight="2dp"
-                app:mtf_hasFocus="true"
+                app:mtf_hasFocus="false"
                 android:layout_gravity="center_horizontal">
 
             <EditText

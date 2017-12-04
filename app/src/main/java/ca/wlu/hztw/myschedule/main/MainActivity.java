@@ -176,7 +176,6 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_container, limitListFragment)
                     .replace(R.id.fragment_container, eventListFragment)
                     .commitAllowingStateLoss();
-            ;
         } else if (requestCode == LIMIT_ACTIVITY && resultCode == RESULT_OK) {
             // TODO
         }

@@ -46,7 +46,9 @@ public class ColorManager {
             Random r = new Random();
             List<Integer> list = new ArrayList<Integer>();
             list.add(R.drawable.spring);
+            list.add(R.drawable.summer);
             list.add(R.drawable.fall);
+            list.add(R.drawable.winter);
             THEME_PICS = list.get(r.nextInt(2));
             THEME_BRIGHT = r.nextInt(3);
         }
