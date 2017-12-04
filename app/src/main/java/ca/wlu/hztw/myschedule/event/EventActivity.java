@@ -50,7 +50,7 @@ public class EventActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // find view-----------------------------------------------------------
-        editTitle = (EditText) findViewById(R.id.cell_event_title);
+        editTitle = (EditText) findViewById(R.id.event_title);
         editPerson = (EditText) findViewById(R.id.event_person);
         if (MainActivity.type == 1) {
             editPerson.setHint("Student");
@@ -107,11 +107,6 @@ public class EventActivity extends AppCompatActivity implements
                         now.get(Calendar.MINUTE),
                         false
                 );
-                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                    }
-                });
                 tpd.show(getFragmentManager(), "Timepickerdialog");
             }
         });
