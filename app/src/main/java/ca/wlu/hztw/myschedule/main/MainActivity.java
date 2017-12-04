@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         LinearLayout linearLayout = navigationView.getHeaderView(0).findViewById(R.id.header_layout);
         linearLayout.setBackgroundTintList(ColorStateList.valueOf(colorManager.getVibrant()));
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound(name.substring(0, 1), colorManager.getMuted());
+                .buildRound(name.length()>0?name.substring(0, 1):"a", colorManager.getMuted());
         ImageView headerImage = navigationView.getHeaderView(0).findViewById(R.id.header_image);
         headerImage.setImageDrawable(drawable);
         TextView headerName = navigationView.getHeaderView(0).findViewById(R.id.header_name);
