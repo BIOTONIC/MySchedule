@@ -49,7 +49,7 @@ public class ColorManager {
             list.add(R.drawable.summer);
             list.add(R.drawable.fall);
             list.add(R.drawable.winter);
-            THEME_PICS = list.get(r.nextInt(2));
+            THEME_PICS = list.get(r.nextInt(4));
             THEME_BRIGHT = r.nextInt(3);
         }
         return THEME_PICS;
