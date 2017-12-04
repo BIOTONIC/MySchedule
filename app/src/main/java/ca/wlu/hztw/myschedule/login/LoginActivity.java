@@ -222,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         editor.putString("name", "admin");
                         editor.putInt("id", 2);
-                        editor.putString("email", "admin@mylaurier.ca");
+                        editor.putString("email", "admin@wlu.ca");
                         editor.putInt("type", 1);// teacher 1
                     }
                     editor.commit();
