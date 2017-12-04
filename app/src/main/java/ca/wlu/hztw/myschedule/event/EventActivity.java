@@ -23,6 +23,8 @@ import java.util.Calendar;
 public class EventActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
+    public final static String POS = "pos";
+
     private int pos;
     private EventPresenter presenter;
     private EditText editTitle;
@@ -60,7 +62,7 @@ public class EventActivity extends AppCompatActivity implements
         editConfirm.setBackgroundColor(colorManager.getVibrant());
 
         // set value-----------------------------------------------------------
-        pos = getIntent().getIntExtra(MainActivity.EDIT_PARAM, -1);
+        pos = getIntent().getIntExtra(POS, -1);
         if (pos >= 0) {
             Event event = presenter.getEvent(pos);
             editTitle.setText(event.getTitle());
@@ -68,6 +70,14 @@ public class EventActivity extends AppCompatActivity implements
             editDate.setText(event.getDate());
             editTime.setText(event.getTimeDuration());
             editNote.setText(event.getNote());
+            if (MainActivity.filter != 0 || MainActivity.type != 0) {
+                editTitle.setEnabled(false);
+                editTime.setEnabled(false);
+                editPerson.setEnabled(false);
+                editDate.setEnabled(false);
+                editNote.setEnabled(false);
+                editConfirm.setEnabled(false);
+            }
         }
 
         // setOnClickListener--------------------------------------------------
@@ -116,12 +126,12 @@ public class EventActivity extends AppCompatActivity implements
                 String time = editTime.getText().toString();
                 String note = editNote.getText().toString();
                 if (pos >= 0) {
-                    presenter.updateEvent(pos, title, date, time, note);
+                    presenter.editNewEvent(pos, title, date, time, note);
                 } else {
-                    presenter.addEvent(title, tname, date, time, note);
+                    presenter.addNewEvent(title, tname, date, time, note);
                 }
                 Intent intent = new Intent();
-                intent.putExtra(MainActivity.EDIT_PARAM, pos);
+                intent.putExtra(POS, pos);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -151,7 +161,6 @@ public class EventActivity extends AppCompatActivity implements
         String hourStringEnd = hourOfDayEnd < 10 ? "0" + hourOfDayEnd : "" + hourOfDayEnd;
         String minuteStringEnd = minuteEnd < 10 ? "0" + minuteEnd : "" + minuteEnd;
         String time = hourString + ":" + minuteString + "-" + hourStringEnd + ":" + minuteStringEnd;
-
         editTime.setText(time);
     }
 }

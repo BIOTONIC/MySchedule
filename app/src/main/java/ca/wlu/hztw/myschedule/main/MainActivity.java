@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity
     private LimitListFragment limitListFragment;
     private SharedPreferences userInfo;
 
-    public final static int EDIT_ACTIVITY = 215;
+    public final static int EVENT_ACTIVITY = 215;
     public final static int LIMIT_ACTIVITY = 920;
-    public final static String EDIT_PARAM = "edit_param";
     public final static String LIMIT_PARAM = "limit_param";
     public final static String PREFS_NAME = "prefs_name";
 
+    public static int filter = 0;
     public static boolean isLoggedIn;
     public static int id;
     public static String name;
@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity
         name = userInfo.getString("name", "");
         email = userInfo.getString("email", "");
         type = userInfo.getInt("type", 0);
+        if (type == 1) {
+            filter = -1;
+        }
 
         // toolbar-------------------------------------------------------------
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -79,10 +82,10 @@ public class MainActivity extends AppCompatActivity
                 if (type == 1) {
                     Intent intent = new Intent(getApplication(), LimitActivity.class);
                     startActivityForResult(intent, LIMIT_ACTIVITY);
-                } else {
+                } else if (filter == 0) {
                     Intent intent = new Intent(getApplication(), EventActivity.class);
-                    intent.putExtra(EDIT_PARAM, -1);
-                    startActivityForResult(intent, EDIT_ACTIVITY);
+                    intent.putExtra(EventActivity.POS, -1);
+                    startActivityForResult(intent, EVENT_ACTIVITY);
                 }
             }
         });
@@ -113,6 +116,8 @@ public class MainActivity extends AppCompatActivity
         // navigation menu-----------------------------------------------------
         Menu menu = navigationView.getMenu();
         if (type == 1) { // teacher
+            MenuItem todo = menu.findItem(R.id.nav_todo);
+            todo.setVisible(false);
             MenuItem completed = menu.findItem(R.id.nav_completed);
             completed.setVisible(false);
             MenuItem discarded = menu.findItem(R.id.nav_discarded);
@@ -149,8 +154,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDIT_ACTIVITY && resultCode == RESULT_OK) {
-            int pos = data.getIntExtra(EDIT_PARAM, -1);
+        if (requestCode == EVENT_ACTIVITY && resultCode == RESULT_OK) {
+            int pos = data.getIntExtra(EventActivity.POS, -1);
             if (pos >= 0) {
                 Snackbar.make(getWindow().getDecorView(), "Updating event success.", Snackbar.LENGTH_SHORT).show();
             } else {
@@ -184,27 +189,47 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
+        if (eventListFragment == null) {
+            eventListFragment = EventListFragment.newInstance(presenter);
+        }
+        limitListFragment = (LimitListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_limit_list);
+        if (limitListFragment == null) {
+            limitListFragment = LimitListFragment.newInstance(presenter);
+        }
+        if (id == R.id.nav_todo) {
+            filter = 0;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, limitListFragment)
+                    .replace(R.id.fragment_container, eventListFragment)
+                    .commit();
+        }
         if (id == R.id.nav_completed) {
-
+            filter = 1;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, limitListFragment)
+                    .replace(R.id.fragment_container, eventListFragment)
+                    .commit();
         } else if (id == R.id.nav_discarded) {
-
+            filter = 2;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, limitListFragment)
+                    .replace(R.id.fragment_container, eventListFragment)
+                    .commit();
         } else if (id == R.id.nav_schedule) {
-            eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_event_list);
-            if (eventListFragment == null) {
-                eventListFragment = EventListFragment.newInstance(presenter);
-            }
-            if (findViewById(R.id.fragment_container) != null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, eventListFragment).commit();
-            }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, eventListFragment)
+                    .commit();
         } else if (id == R.id.nav_available_time) {
-            limitListFragment = (LimitListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_limit_list);
-            if (limitListFragment == null) {
-                limitListFragment = LimitListFragment.newInstance(presenter);
-            }
-            if (findViewById(R.id.fragment_container) != null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, limitListFragment).commit();
-            }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, limitListFragment)
+                    .commit();
+
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_logout) {

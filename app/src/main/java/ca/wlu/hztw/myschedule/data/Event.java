@@ -10,6 +10,7 @@ public class Event implements Serializable {
     private String endTime;
     private String title;
     private String note;
+    private int state;
 
     public Event(String sname, String tname, String date, String startTime, String endTime, String title, String note) {
         this.sname = sname;
@@ -19,6 +20,7 @@ public class Event implements Serializable {
         this.endTime = endTime;
         this.title = title;
         this.note = note;
+        this.state = 0;
     }
 
     public String getSname() {
@@ -92,5 +94,23 @@ public class Event implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean setCompleted() {
+        if (state == 0) {
+            state = 1;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean setDiscarded() {
+        if (state == 0) {
+            state = 2;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

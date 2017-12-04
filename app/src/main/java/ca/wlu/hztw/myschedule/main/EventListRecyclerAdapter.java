@@ -38,27 +38,32 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final CardView evendCard;
+        private final CardView eventCard;
         private final TextView eventTitle;
         private final TextView eventDesc;
-        private final Button eventDone;
+        private final Button eventComplete;
         private final Button eventDiscard;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            evendCard = itemView.findViewById(R.id.cell_event_card);
+            eventCard = itemView.findViewById(R.id.cell_event_card);
             eventTitle = itemView.findViewById(R.id.cell_event_title);
             eventDesc = itemView.findViewById(R.id.cell_event_desc);
-            eventDone = itemView.findViewById(R.id.cell_event_done);
+            eventComplete = itemView.findViewById(R.id.cell_event_complete);
             eventDiscard = itemView.findViewById(R.id.cell_event_discard);
 
             ColorManager colorManager = ColorManager.getInstance(itemView.getResources());
-            eventDone.setBackgroundColor(colorManager.getVibrant());
+            eventComplete.setBackgroundColor(colorManager.getVibrant());
 
-            evendCard.setOnClickListener(this);
-            eventDone.setOnClickListener(this);
+            eventCard.setOnClickListener(this);
+            eventComplete.setOnClickListener(this);
             eventDiscard.setOnClickListener(this);
+
+            if (MainActivity.filter != 0) {
+                eventDiscard.setEnabled(false);
+                eventComplete.setEnabled(false);
+            }
         }
 
         public void setEventTitle(String title) {
@@ -75,7 +80,7 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
                 case R.id.cell_event_card:
                     listener.onItemClick(v, getAdapterPosition());
                     break;
-                case R.id.cell_event_done:
+                case R.id.cell_event_complete:
                     int pos = getAdapterPosition();
                     if (presenter.doneEvent(v, pos)) {
                         notifyItemRemoved(pos);

@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 public class EventListFragment extends Fragment implements MainContract.ItemClickListener {
     private final static String PRESENTER = "presenter";
-
     private MainPresenter presenter;
 
     public EventListFragment() {
@@ -41,7 +40,7 @@ public class EventListFragment extends Fragment implements MainContract.ItemClic
         // inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
 
-        // get presenter
+        // get presenter & event state filter
         presenter = (MainPresenter) getArguments().getSerializable(PRESENTER);
 
         // RecyclerView
@@ -59,11 +58,19 @@ public class EventListFragment extends Fragment implements MainContract.ItemClic
         recyclerView.addItemDecoration(decoration);
 
         // set item touch listener for swiping
-        recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
+        if (MainActivity.filter == 0) {
+            recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
+        }
 
         // collapsing toolbar
         CollapsingToolbarLayout collapsingToolbar = getActivity().findViewById(R.id.main_collapsing_toolbar);
-        collapsingToolbar.setTitle("My Schedule");
+        if (MainActivity.filter == 1) {
+            collapsingToolbar.setTitle("Completed");
+        } else if (MainActivity.filter == 2) {
+            collapsingToolbar.setTitle("Discarded");
+        } else {
+            collapsingToolbar.setTitle("My Schedule");
+        }
         // set image for collapsing toolbar
         ImageView imageView = getActivity().findViewById(R.id.backdrop);
         Glide.with(this)
@@ -81,8 +88,8 @@ public class EventListFragment extends Fragment implements MainContract.ItemClic
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra(MainActivity.EDIT_PARAM, position);
-        getActivity().startActivityForResult(intent, MainActivity.EDIT_ACTIVITY);
+        intent.putExtra(EventActivity.POS, position);
+        getActivity().startActivityForResult(intent, MainActivity.EVENT_ACTIVITY);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ca.wlu.hztw.myschedule.main;
 
 import android.view.View;
-import ca.wlu.hztw.myschedule.data.Event;
 import ca.wlu.hztw.myschedule.data.EventRepository;
 
 import java.io.Serializable;
@@ -15,20 +14,20 @@ public class MainPresenter implements Serializable {
     }
 
     public void onBindEventListViewHolder(EventListRecyclerAdapter.ViewHolder holder, int position) {
-        holder.setEventTitle(repository.getTitle(position));
-        holder.setEventDesc(repository.getDesc(position));
+        holder.setEventTitle(repository.getTitle(position, MainActivity.filter));
+        holder.setEventDesc(repository.getDesc(position, MainActivity.filter));
     }
 
     public int getEventListItemCount() {
-        return repository.getSize();
+        return repository.getSize(MainActivity.filter);
     }
 
     public boolean doneEvent(View view, int pos) {
-        return false;
+        return repository.completeEvent(pos);
     }
 
     public boolean discardEvent(View view, int pos) {
-        return false;
+        return repository.discardEvent(pos);
     }
 
     public void onBindLimitListViewHolder(LimitListRecyclerAdapter.ViewHolder holder, int position) {
